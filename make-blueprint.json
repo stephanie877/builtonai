@@ -1,0 +1,73 @@
+{
+  "name": "Typeform → Airtable CRM",
+  "flow": [
+    {
+      "id": 1,
+      "module": "typeform:TriggerNewEntry",
+      "version": 1,
+      "parameters": {
+        "formId": "AbARdjjl",
+        "hookId": ""
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "restore": { "parameters": { "formId": { "label": "AI Business Accelerator — Client Intake" } } },
+        "parameters": [
+          { "name": "hookId", "type": "hook:typeformhook", "label": "Webhook" },
+          { "name": "formId", "type": "select", "label": "Form ID" }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "airtable:ActionCreateRecord",
+      "version": 3,
+      "parameters": {
+        "base": "appeHJfMPE2sIj87I",
+        "table": "tblsa0KMAv0twNYPH"
+      },
+      "mapper": {
+        "fields": {
+          "Name": "{{1.answers[].text}}",
+          "Email": "{{1.hidden.email}}",
+          "Stage": "🟠 Applied",
+          "Source": "Organic Search",
+          "Date Added": "{{formatDate(now; \"MM/DD/YYYY\")}}",
+          "Typeform Response ID": "{{1.responseId}}",
+          "Notes": "Submitted via intake form on {{formatDate(now; \"MM/DD/YYYY\")}}"
+        }
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 },
+        "restore": {
+          "parameters": {
+            "base": { "label": "Built On AI — CRM" },
+            "table": { "label": "Leads" }
+          }
+        },
+        "parameters": [
+          { "name": "base", "type": "select", "label": "Base" },
+          { "name": "table", "type": "select", "label": "Table" }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": { "orphans": [] },
+    "zone": "us1.make.com"
+  }
+}
